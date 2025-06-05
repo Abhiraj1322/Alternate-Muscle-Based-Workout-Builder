@@ -17,7 +17,7 @@ const approutes = () => {
       <Route path='/workoutbuilder' element={<WorkoutBuilder/>} />  
       <Route path='/loginpage' element={<LoginPage/>} />  
       <Route path='/explore' element={<ExplorePage/>} />
-       <Route path='/adminpage' element={<AdminPage/>}/>
+      <Route path='/adminpage' element={<AdminPage/>}/>
     </Routes>
   )
 }
