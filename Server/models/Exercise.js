@@ -1,42 +1,24 @@
-const mongoose=require('mongoose');
-const ExcerciseSchema= new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-    },
-    muscleGroup:{
-        type:String,
-        required:true,
-    },
-    subGroup:{
-        type:String,
-    },
-    equipment:{
-    type:String,
-    default:'Bodyweight'
-    },
-    difficulty:{
-        type:String,
-        enum:['Beginner','Intermediate','Advanced']
-    },
-    videoUrl:{
-        type:String,
-        required:true,
-    },
-    instruction:{
-        type:String,
-        required:true,
-    },
-    tips:{
-        type:String,
-    },
-    createdAt:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:true,
+const mongoose = require('mongoose');
 
-    }
+const ExerciseSchema = new mongoose.Schema({
+  name: String,
+  force: String,
+  level: String,
+  mechanic: String,
+  equipment: String,
+  primaryMuscles: [String],
+  secondaryMuscles: [String],
+  instructions: String,
+  category: String,
+  images: [String],
+  imageUrls: [String], 
+  exerciseId: String,  
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-})
-const Exercise=mongoose.model('Excercise',ExcerciseSchema)
-module.exports=Exercise
+const Exercise = mongoose.model('Exercise', ExerciseSchema);
+
+module.exports = Exercise;
