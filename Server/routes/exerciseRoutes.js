@@ -41,3 +41,4 @@ if(!exercise) return res.status(404).json("Excercise got deleted")
  res.status(500).json({error:err})
     }
 })
+ module.exports=router

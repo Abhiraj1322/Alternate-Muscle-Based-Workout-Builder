@@ -4,12 +4,9 @@ const cors=require('cors')
 const app=express();
 require("dotenv").config()
 const PORT=process.env.PORT
-
-
-
-
-
-
+const excercise=require("./routes/exerciseRoutes")
+app.use(express.json())
+app.use("/exercise",excercise)
 
 
 mongoose.connect(process.env.MONGODB_URI)
