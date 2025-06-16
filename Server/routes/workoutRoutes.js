@@ -44,3 +44,4 @@ if(!workout) return res.status(404).json()
 res.status(500).json({eror:err.message})
     }
 })
+module.exports=router;

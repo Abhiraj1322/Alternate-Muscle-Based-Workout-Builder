@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(""); // Clear any old messages
+    setMessage(""); 
 
     try {
       const res = await axios.post("http://localhost:8000/api/auth/login", {
@@ -24,10 +24,9 @@ const LoginPage = () => {
       });
 
       const { token, user } = res.data;
-      localStorage.setItem("token", token); // Save token for future requests
+      localStorage.setItem("token", token); 
       setMessage("✅ Login successful");
 
-      // Optional: redirect or set user state
     } catch (err) {
       setMessage(err.response?.data?.message || "Login failed");
     }

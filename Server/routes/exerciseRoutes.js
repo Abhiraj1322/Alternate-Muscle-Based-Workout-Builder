@@ -22,6 +22,18 @@ res.json(exercise)
     }
     
 })
+router.get("/:id",async(req,res)=>{
+    try{
+        const exercise =await Excercise.findById(req.params.id)
+        if(!exercise){
+            return res.status(404).json({message:'Exercise not found'})
+        }
+        res.json(exercise)
+    }
+    catch(err){
+        res.status(500).json({message:"Server eror ",eror:err})
+    }
+})
 router.put("/:id",async(req,res)=>{
     try{
 const exercise=await Excercise.findById(req.params.id)

@@ -5,20 +5,24 @@ const workoutSchema= new mongoose.Schema({
     required:true,
    },
    createdby:{
-    typr:String,
+    type:String,
     required:true,
    },
-   excercises:[
+   exercises:[
     {
-   excercise:{
+   exercise:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:'Excercise',
+            ref:'Exercise',
             required:true,
         },
         sets:Number,
         reps:Number,
-        resttime:Number,
-        notes: String,
+        muscles:[String],
+         type: {
+      type: String,
+      enum: ['push', 'pull', 'legs'], 
+      required: true,
+    }
     }
      
    ],
