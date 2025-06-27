@@ -10,32 +10,45 @@ const Exercise = () => {
   const [reps, setReps] = useState(10);
   const [type, setType] = useState('push')
   const navigate = useNavigate();
-    useEffect(()=>{
-        const fetchexercise=async()=>{
-           const response=await axios.get(`http://localhost:8000/exercise/${id}`) 
+  const [day, setDay] = useState("Monday");
+  const [notes,setNotes]=useState("")
 
-           setexercise(response.data)
-        }
-        fetchexercise()
-    },[id])
+useEffect(() => {
+  const fetchexercise = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/exercise/${id}`);
+      setexercise(response.data);
+    } catch (err) {
+      console.error("Error fetching exercise:", err);
+    }
+  };
+  fetchexercise();
+}, [id]);
 
-    const addexercise=async()=>{
-      try{
-  const newWorkout = {
-        name: exercise.name,
-        createdby:"Abhiraj", // or user ID
-         muscles:exercise.primaryMuscles,
-        exercises: [
-          {
-            exercise: exercise._id,
-            sets,
-            reps,
-            resttime: 60,
-            type:type,
-          },
-        ],
-      };
-        const response = await axios.post("http://localhost:8000/workout", newWorkout);
+  const addexercise = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const newWorkout = {
+      name: exercise.name,
+      muscles: exercise.primaryMuscles,
+      day,
+      notes,
+      exercises: [
+        {
+          exercise: exercise._id,
+          sets,
+          reps,
+          resttime: 60,
+          type: type,
+        },
+      ],
+    };
+  const response = await axios.post("http://localhost:8000/workout", newWorkout, {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    });
       alert("Exercise added successfully!");
       navigate('/myworkout')
       }
@@ -45,66 +58,103 @@ const Exercise = () => {
     }
     if(!exercise) return  <p>Loading</p>
   return (
+<div className="p-4 max-w-2xl mx-auto">
+  <h2 className="text-2xl sm:text-3xl font-bold mb-4">{exercise.name}</h2>
+
+  <div className="text-white space-y-2 mb-4">
+    <p><strong>Target muscles:</strong> {exercise.primaryMuscles}</p>
+    <p><strong>Level:</strong> {exercise.level}</p>
+    <p><strong>Workout type:</strong> {exercise.force}</p>
+    <p><strong>Instructions:</strong> {exercise.instructions}</p>
+  </div>
+
+  <div className="flex flex-wrap gap-3 mb-6">
+    {exercise.imageUrls.map((imgPath, i) => (
+      <img
+        key={i}
+        src={`http://localhost:8000/${imgPath}`}
+        alt={`${exercise.name} image ${i + 1}`}
+        className="w-32 h-32 object-cover rounded border border-gray-500"
+      />
+    ))}
+  </div>
+
+  <div className="space-y-4 mb-6">
+    {/* Sets */}
     <div>
- <h2 className="text-2xl font-bold">{exercise.name}</h2>
-  <p><strong>Targetmuscles:</strong> {exercise.primaryMuscles}</p>
- <p><strong>Level:</strong> {exercise.level}</p>
- <p><strong>Workout type:</strong> {exercise.force}</p>
-  <p><strong>instructions:</strong> {exercise.instructions
-    }</p>
-{exercise.imageUrls.map((imgPath,i)=>
-    <img key={i}
-    src={`http://localhost:8000/${imgPath}`} 
-    alt={`${exercise.name} image${i+1}`}
-      className="w-32 h-32 object-cover rounded" />
-    
-)
-
-}
- <div className="space-y-3 mb-4">
-        <label className="block">
-          Sets:
-          <input
-            type="number"
-            value={sets}
-            onChange={(e) => setSets(Number(e.target.value))}
-            className="ml-2 border p-1 rounded"
-          />
-        </label>
-
-        <label className="block">
-          Reps:
-          <input
-            type="number"
-            value={reps}
-            onChange={(e) => setReps(Number(e.target.value))}
-            className="ml-2 border p-1 rounded"
-          />
-        </label>
-
-        <label className="block">
-          Type:
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="ml-2 border p-1 rounded"
-          >
-            <option value="push">Push</option>
-            <option value="pull">Pull</option>
-  
-          </select>
-        </label>
-         
-        
-      </div>
-      <button
-        onClick={addexercise}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Add to Workout
-      </button>
-
+      <label className="block mb-1 font-medium text-white">Sets</label>
+      <input
+        type="number"
+        value={sets}
+        onChange={(e) => setSets(Number(e.target.value))}
+        className="w-full border p-2 rounded bg-black text-white"
+      />
     </div>
+
+    {/* Reps */}
+    <div>
+      <label className="block mb-1 font-medium text-white">Reps</label>
+      <input
+        type="number"
+        value={reps}
+        onChange={(e) => setReps(Number(e.target.value))}
+        className="w-full border p-2 rounded bg-black text-white"
+      />
+    </div>
+
+    {/* Type */}
+    <div>
+      <label className="block mb-1 font-medium text-white">Type</label>
+      <select
+        value={type}
+        onChange={(e) => setType(e.target.value)}
+        className="w-full border p-2 rounded bg-black text-white"
+      >
+        <option value="push">Push</option>
+        <option value="pull">Pull</option>
+        <option value="legs">Legs</option>
+      </select>
+    </div>
+
+    {/* Day */}
+    <div>
+      <label className="block mb-1 font-medium text-white">Day</label>
+      <select
+        value={day}
+        onChange={(e) => setDay(e.target.value)}
+        className="w-full border p-2 rounded bg-black text-white"
+      >
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+        <option>Sunday</option>
+      </select>
+    </div>
+
+    {/* Notes */}
+    <div>
+      <label className="block mb-1 font-medium text-white">Notes (optional)</label>
+      <textarea
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        placeholder="e.g. Try higher weight next time"
+        className="w-full border p-2 rounded bg-black text-white"
+        rows={3}
+      />
+    </div>
+  </div>
+
+  <button
+    onClick={addexercise}
+    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
+  >
+    Add to Workout
+  </button>
+</div>
+
 
   )
 }

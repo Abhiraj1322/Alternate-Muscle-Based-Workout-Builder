@@ -10,9 +10,17 @@ const register = async (req, res) => {
     if (existinguser) return res.status(400).json({ message: "User already exists" });
 
     const newUser = new User({ name, email, password });
+    
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully" }); 
+     res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+    });
   } catch (err) {
     res.status(500).json({ message: "Error in registering user", error: err.message });
   }

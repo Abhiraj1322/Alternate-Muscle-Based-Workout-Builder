@@ -29,8 +29,18 @@ const RegisterPage = () => {
         email: formData.email,
         password: formData.password,
       });
+
+      const user = response.data.user
+      console.log(user)
+      localStorage.setItem("userId", user._id);
+localStorage.setItem("name", user.name);
+localStorage.setItem("email", user.email);
+
+  
+
      navigate("/loginpage")
       setMessage("✅ Registered successfully. Please log in.");
+       
       setFormData({
         name: "",
         email: "",

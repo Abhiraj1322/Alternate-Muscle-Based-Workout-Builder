@@ -8,6 +8,21 @@ const workoutSchema= new mongoose.Schema({
     type:String,
     required:true,
    },
+  day: {
+    type: String,
+    enum: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    required: true,
+  },
+
+
    exercises:[
     {
    exercise:{
@@ -17,7 +32,10 @@ const workoutSchema= new mongoose.Schema({
         },
         sets:Number,
         reps:Number,
-        muscles:[String],
+           muscles: {
+        type: [String],
+        default: [],
+      },
          type: {
       type: String,
       enum: ['push', 'pull', 'legs'], 
@@ -32,7 +50,11 @@ const workoutSchema= new mongoose.Schema({
    },
    updatedAt:{
     type:Date
-   }
+   },
+     notes: {
+    type: String,
+    default: "",
+  },
 
 })
 

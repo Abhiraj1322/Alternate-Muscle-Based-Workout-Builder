@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from 'react-router-dom'
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
+const navigate=useNavigate()
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(""); // Clear any old messages
+    setMessage(""); 
 
     try {
       const res = await axios.post("http://localhost:8000/api/auth/login", {
@@ -24,10 +24,12 @@ const LoginPage = () => {
       });
 
       const { token, user } = res.data;
-      localStorage.setItem("token", token); // Save token for future requests
-      setMessage("✅ Login successful");
+      localStorage.setItem("token", token);
 
-      // Optional: redirect or set user state
+      setMessage("✅ Login successful");
+      
+      navigate("/homepage")
+
     } catch (err) {
       setMessage(err.response?.data?.message || "Login failed");
     }
@@ -71,6 +73,12 @@ const LoginPage = () => {
             Login
           </button>
         </form>
+    <p className="mt-6 text-center text-gray-400">
+      Don’t have an account?{" "}
+      <a href="/registerpage" className="text-blue-500 hover:underline">
+        Register here
+      </a>
+    </p>
       </div>
     </div>
   );
