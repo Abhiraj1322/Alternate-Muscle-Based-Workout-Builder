@@ -2,7 +2,9 @@ const express=require("express")
 const router=express.Router()
 const Exercise=require("../models/Exercise")
  const mongoose = require('mongoose');
-router.post('/',async(req,res)=>{
+const authenticateToken=require("../middleware/authenticateToken")
+const isAdmin=require('../middleware/checkAdmin')
+router.post('/',authenticateToken,isAdmin, async(req,res)=>{
     try{
 const exercise= new Exercise(req.body);
 await exercise.save()
@@ -12,7 +14,7 @@ res.status(201).json(exercise);
  res.status(400).json({eror:err.message})   
     }
 })
-router.get("/",async(req,res)=>{
+router.get("/",authenticateToken, async(req,res)=>{
     try{
 const exercise= await Exercise.find()
 res.json(exercise)
@@ -22,7 +24,7 @@ res.json(exercise)
     }
     
 })
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticateToken,  async (req, res) => {
   const { id } = req.params;
 
 
@@ -42,7 +44,7 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
-router.put("/:id",async(req,res)=>{
+router.put("/:id",authenticateToken,isAdmin,async(req,res)=>{
     try{
 const exercise=await Exercise.findById(req.params.id)
 if(!exercise) return res.status(404).json()
@@ -52,7 +54,7 @@ if(!exercise) return res.status(404).json()
     }
 })
 
-router.delete("/:id",async(req,res)=>{
+router.delete("/:id",authenticateToken,isAdmin,async(req,res)=>{
     try{
 const exercise=await Exercise.findByIdAndDelete(req.params.id)
 if(!exercise) return res.status(404).json("Excercise got deleted")

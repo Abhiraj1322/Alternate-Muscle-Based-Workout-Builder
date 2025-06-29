@@ -3,13 +3,13 @@ const bcrypt=require('bcrypt');
 const jwt=require("jsonwebtoken")
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password,isAdmin } = req.body;
 
   try {
     const existinguser = await User.findOne({ email });
     if (existinguser) return res.status(400).json({ message: "User already exists" });
 
-    const newUser = new User({ name, email, password });
+    const newUser = new User({ name, email, password , isAdmin: isAdmin === true || isAdmin === "true"});
     
     await newUser.save();
 
@@ -19,6 +19,7 @@ const register = async (req, res) => {
         _id: newUser._id,
         name: newUser.name,
         email: newUser.email,
+         isAdmin: newUser.isAdmin
       },
     });
   } catch (err) {

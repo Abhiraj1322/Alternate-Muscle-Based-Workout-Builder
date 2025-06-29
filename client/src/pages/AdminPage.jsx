@@ -1,79 +1,140 @@
-import React, { useEffect,useState } from 'react'
-import { useNavigate } from "react-router-dom";
-import { FaUser, FaEnvelope, FaIdBadge, FaUserShield, FaHome, FaDumbbell } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 const AdminPage = () => {
-  const [User,setUser]=useState(null)
-   const navigate = useNavigate();
+  const [exercises, setExercises] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    force: "",
+    level: "",
+    mechanic: "",
+    equipment: "",
+    primaryMuscles: "",
+    secondaryMuscles: "",
+    instructions: "",
+    category: "",
+    imageUrls: "",
+  });
 
-useEffect(()=>{
-  const fetchUerinfo= async ()=>{
-    const token=localStorage.getItem("token")
-    const res =await fetch("http://localhost:8000/api/user",{
-      headers:{
-       Authorization: `Bearer ${token}`, 
+  const token = localStorage.getItem("token");
+
+
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/exercise", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setExercises(res.data);
+      } catch (err) {
+        console.error("Fetch error:", err.response?.data || err.message);
       }
-    })
-    const data =await res.json();
+    };
+    fetchExercises();
+  }, [token]);
 
-    setUser(data.user)
+  // Form change handler
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  }
-  fetchUerinfo()
-},[])
+  // Submit new exercise
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      ...formData,
+      primaryMuscles: formData.primaryMuscles.split(",").map((m) => m.trim()),
+      secondaryMuscles: formData.secondaryMuscles.split(",").map((m) => m.trim()),
+      imageUrls: formData.imageUrls.split(",").map((url) => url.trim()),
+    };
+
+    try {
+      await axios.post("http://localhost:8000/exercise", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("Exercise added!");
+      setFormData({
+        name: "",
+        force: "",
+        level: "",
+        mechanic: "",
+        equipment: "",
+        primaryMuscles: "",
+        secondaryMuscles: "",
+        instructions: "",
+        category: "",
+        imageUrls: "",
+      });
+      window.location.reload(); // or re-fetch
+    } catch (err) {
+      console.error("Add error:", err.response?.data || err.message);
+    }
+  };
 
 
-  const goToHome = () => {
-    navigate("/homepage"); 
-  }
-  
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/exercise/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setExercises(exercises.filter((ex) => ex._id !== id));
+    } catch (err) {
+      console.error("Delete error:", err.response?.data || err.message);
+    }
+  };
 
-  const myworkout = () => {
-    navigate("/myworkout"); 
-  }
-  if (!User) return <p>Loading...</p>;
   return (
- <div className="max-w-md mx-auto mt-10 p-6 bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-lg space-y-6 text-gray-800 border border-gray-200">
-      <h2 className="text-3xl font-extrabold text-center text-indigo-700">👤 User Profile</h2>
+    <div className="p-6 max-w-4xl mx-auto text-amber-50">
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">Admin Exercise Panel</h1>
 
-      <div className="space-y-4 text-sm">
-        <div className="flex items-center gap-2">
-          <FaUser className="text-indigo-600" />
-          <p><strong>Name:</strong> {User.name}</p>
+      {/* Add Form */}
+      <form onSubmit={handleSubmit} className="grid gap-4 grid-cols-1 sm:grid-cols-2 mb-10">
+        {[
+          "name", "force", "level", "mechanic", "equipment",
+          "category", "instructions", "primaryMuscles", "secondaryMuscles", "imageUrls"
+        ].map((field) => (
+          <input
+            key={field}
+            name={field}
+            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+            value={formData[field]}
+            onChange={handleChange}
+            className="p-2 border border-gray-300 rounded"
+          />
+        ))}
+
+        <div className="sm:col-span-2">
+          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
+            Add Exercise
+          </button>
         </div>
+      </form>
 
-        <div className="flex items-center gap-2">
-          <FaEnvelope className="text-green-600" />
-          <p className="break-words"><strong>Email:</strong> {User.email}</p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <FaUserShield className="text-yellow-500" />
-          <p><strong>Admin:</strong> {User.isAdmin ? "Yes ✅" : "No ❌"}</p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <FaIdBadge className="text-gray-500" />
-          <p className="break-words text-xs"><strong>User ID:</strong> {User._id}</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-        <button
-          onClick={goToHome}
-          className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition"
-        >
-          <FaHome /> Homepage
-        </button>
-
-        <button
-          onClick={myworkout}
-          className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition"
-        >
-          <FaDumbbell /> My Workouts
-        </button>
+      {/* Exercises List */}
+      <div className="space-y-4">
+        {exercises.map((ex) => (
+          <div key={ex._id} className="p-4 border rounded shadow-sm">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-lg font-bold">{ex.name}</h2>
+                <p><strong>Category:</strong> {ex.category}</p>
+                <p><strong>Force:</strong> {ex.force}</p>
+                <p><strong>Level:</strong> {ex.level}</p>
+                <p><strong>Muscles:</strong> {ex.primaryMuscles?.join(", ")}</p>
+              </div>
+              <button
+                onClick={() => handleDelete(ex._id)}
+                className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminPage
+export default AdminPage;

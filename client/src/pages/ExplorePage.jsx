@@ -14,7 +14,12 @@ const[workoutType,setWokoutType]=useState("")
 useEffect(() => {
   const fetchexercise = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/exercise");
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:8000/exercise",{
+          headers: {
+        Authorization: `Bearer ${token}` // send token
+      }
+      });
       
       setexercise(response.data);
 

@@ -16,7 +16,12 @@ const Exercise = () => {
 useEffect(() => {
   const fetchexercise = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/exercise/${id}`);
+        const token = localStorage.getItem("token")
+      const response = await axios.get(`http://localhost:8000/exercise/${id}`,{
+        headers:{
+           Authorization: `Bearer ${token}`
+        }
+      });
       setexercise(response.data);
     } catch (err) {
       console.error("Error fetching exercise:", err);
