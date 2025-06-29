@@ -30,7 +30,7 @@ const handleChange = (e) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/api/auth/register", {
+      const response = await axios.post("https://alternate-muscle-based-workout-builder-1.onrender.com/api/auth/register", {
         name: formData.name,
         email: formData.email,
         password: formData.password,

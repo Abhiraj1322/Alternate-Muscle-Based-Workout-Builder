@@ -8,24 +8,43 @@ const MyWorkouts = () => {
   const [exercise,setexercise]=useState([]);
 const navigate = useNavigate();
 useEffect(() => {
-  const fetchWorkouts = async () => {
+  const savedWorkouts = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.get("http://localhost:8000/workout", {
+      const response = await axios.get("https://alternate-muscle-based-workout-builder-1.onrender.com/workout", {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-
+          console.log(response.data);
       setWorkouts(response.data);
     } catch (error) {
       console.error("Failed to fetch workouts:", error);
     }
   };
 
-  fetchWorkouts();
+  savedWorkouts();
 }, []);
+  useEffect(() => {
+    const fetchWorkout = async () => {
+      try {
+        const token = localStorage.getItem('token');  // Get token from storage
+        const response = await axios.get(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, {
+          // headers: {
+          //   Authorization: `Bearer ${token}`,          // Pass token in header
+          // },
+        });
+        setWorkouts(response.data);                      // Set workout data to state
+      } catch (error) {
+        console.error('Failed to fetch workout:', error);
+      }
+    };
+
+    if (id) {
+      fetchWorkout();
+    }
+  }, [id]);
 
 const deleteWorkout = async (id) => {
   try {

@@ -22,7 +22,7 @@ const AdminPage = () => {
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/exercise", {
+        const res = await axios.get("https://alternate-muscle-based-workout-builder-1.onrender.com/exercise", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setExercises(res.data);
@@ -50,7 +50,7 @@ const AdminPage = () => {
     };
 
     try {
-      await axios.post("http://localhost:8000/exercise", payload, {
+      await axios.post("https://alternate-muscle-based-workout-builder-1.onrender.com/exercise", payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Exercise added!");
@@ -75,7 +75,7 @@ const AdminPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/exercise/${id}`, {
+      await axios.delete(`https://alternate-muscle-based-workout-builder-1.onrender.com/exercise/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExercises(exercises.filter((ex) => ex._id !== id));

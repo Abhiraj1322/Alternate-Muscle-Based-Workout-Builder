@@ -16,10 +16,10 @@ const EditWorkout = () => {
       setError("");
       try {
         const token = localStorage.getItem("token"); 
-        const res = await axios.get("http://localhost:8000/workout", {
+        const res = await axios.get(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setWorkout(res.data[0]);
+        setWorkout(res.data);
 
      
       } catch (err) {
@@ -36,7 +36,7 @@ const EditWorkout = () => {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:8000/workout/${id}`, workout, {
+      await axios.put(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, workout, {
         headers: { Authorization: `Bearer ${token}` },
       });
       

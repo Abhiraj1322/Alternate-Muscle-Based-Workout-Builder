@@ -13,11 +13,11 @@ const [eror,setError]=useState()
       setError("");
       try {
         const token = localStorage.getItem("token"); 
-        const res = await axios.get("http://localhost:8000/workout", {
+        const res = await axios.get(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setexercise(res.data[0]);
-        console.log(res.data[0])
+        setexercise(res.data);
+        console.log(res.data)
      
       } catch (err) {
         setError("Failed to fetch workout");
@@ -27,7 +27,7 @@ const [eror,setError]=useState()
       }
     };
     fetchWorkout();
-  }, []);
+  }, [id]);
 
   if (loading || !exercise) return <p>Loading...</p>;
 

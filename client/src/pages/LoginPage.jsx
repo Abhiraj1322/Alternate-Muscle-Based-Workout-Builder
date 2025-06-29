@@ -18,7 +18,7 @@ const navigate=useNavigate()
     setMessage(""); 
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
+      const res = await axios.post("https://alternate-muscle-based-workout-builder-1.onrender.com/api/auth/login", {
         email: formData.email,
         password: formData.password,
       });

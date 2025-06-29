@@ -28,6 +28,19 @@ router.get("/", authenticateToken, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+router.get("/:id", authenticateToken, async (req, res) => {
+  try {
+    const workout = await Workout.findOne({ _id: req.params.id, createdby: req.userId });
+
+    if (!workout) {
+      return res.status(404).json({ error: "Workout not found" });
+    }
+
+    res.status(200).json(workout);
+  } catch (err) {
+    res.status(400).json({ error: "Invalid ID or server error" });
+  }
+});
 
 
 router.put("/:id", authenticateToken, async (req, res) => {
