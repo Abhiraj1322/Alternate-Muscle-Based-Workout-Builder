@@ -158,6 +158,51 @@ useEffect(() => {
   >
     Add to Workout
   </button>
+<div className="mt-10 border-t pt-6 text-sm text-white space-y-2">
+  <h3 className="text-lg font-semibold">📚 Learn More About This Exercise</h3>
+  <ul className="list-disc list-inside space-y-1 text-blue-300">
+    <li>
+      <a
+        href={`https://www.google.com/search?q=${exercise.name}+exercise+benefits`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline"
+      >
+        Google: Benefits of {exercise.name}
+      </a>
+    </li>
+    <li>
+      <a
+        href={`https://www.youtube.com/results?search_query=${exercise.name}+exercise+form`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline"
+      >
+        YouTube: Proper form for {exercise.name}
+      </a>
+    </li>
+    <li>
+      <a
+        href={`https://exrx.net/Lists/Directory`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline"
+      >
+        ExRx.net – Exercise Directory
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://www.ncbi.nlm.nih.gov/pmc/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline"
+      >
+        PubMed Central – Scientific Research on Exercise
+      </a>
+    </li>
+  </ul>
+</div>
 </div>
 
 
