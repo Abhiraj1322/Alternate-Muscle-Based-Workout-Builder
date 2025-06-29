@@ -50,7 +50,7 @@ const deleteWorkout = async (id) => {
   try {
     const token = localStorage.getItem("token");
 
-    await axios.delete(`http://localhost:8000/workout/${id}`, {
+    await axios.delete(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
