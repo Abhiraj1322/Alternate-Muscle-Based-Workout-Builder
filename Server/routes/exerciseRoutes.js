@@ -44,15 +44,23 @@ router.get("/:id", authenticateToken,  async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
-router.put("/:id",authenticateToken,isAdmin,async(req,res)=>{
-    try{
-const exercise=await Exercise.findById(req.params.id)
-if(!exercise) return res.status(404).json()
+router.put("/:id", authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const updatedExercise = await Exercise.findByIdAndUpdate(
+      req.params.id,      // which document to update
+      req.body,           // new data to set
+      { new: true }       // return the updated document
+    );
+
+    if (!updatedExercise) {
+      return res.status(404).json({ message: "Exercise not found" });
     }
-    catch(err){
-   res.status(500).json({error:err.message})
-    }
-})
+
+    res.json(updatedExercise);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 router.delete("/:id", authenticateToken, isAdmin, async (req, res) => {
   try {
