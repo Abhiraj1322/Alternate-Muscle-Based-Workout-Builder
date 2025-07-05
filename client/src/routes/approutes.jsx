@@ -13,6 +13,8 @@ import ProtectedRoute from '../components/ProtectedRoute'
 import EditWorkout from '../pages/EditWorkout'
 import ViewDetails from '../pages/ViewDetails'
 import AdminPage from '../pages/AdminPage'
+import ExerciseDetails from '../pages/ExerciseDetails'
+import EditExercise from '../pages/EditExercise'
 const approutes = () => {
   return (
     <Routes>
@@ -33,6 +35,8 @@ const approutes = () => {
         <Route path='viewdetails/:id' element={<ProtectedRoute><ViewDetails/></ProtectedRoute>}/>
          <Route path='user' element={<ProtectedRoute><UserPage/></ProtectedRoute>}/>
          <Route path='admin' element={<ProtectedRoute><AdminPage/></ProtectedRoute>}/>
+          <Route path='exercisedetails/:id' element={<ProtectedRoute><ExerciseDetails/></ProtectedRoute>}/>
+          <Route path='editexercise/:id' element={<ProtectedRoute><EditExercise/></ProtectedRoute>}/>
          </Route>
     </Routes>
   )

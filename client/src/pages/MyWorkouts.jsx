@@ -17,7 +17,7 @@ useEffect(() => {
           Authorization: `Bearer ${token}`
         }
       });
-          console.log(response.data);
+
       setWorkouts(response.data);
     } catch (error) {
       console.error("Failed to fetch workouts:", error);
@@ -31,11 +31,11 @@ useEffect(() => {
       try {
         const token = localStorage.getItem('token');  // Get token from storage
         const response = await axios.get(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, {
-          // headers: {
-          //   Authorization: `Bearer ${token}`,          // Pass token in header
-          // },
+         headers: {
+            Authorization: `Bearer ${token}`,         
+         },
         });
-        setWorkouts(response.data);                      // Set workout data to state
+        setWorkouts(response.data);                     
       } catch (error) {
         console.error('Failed to fetch workout:', error);
       }
