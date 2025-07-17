@@ -115,7 +115,7 @@ const filteredWorkouts =
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <button
-                onClick={() => navigate(`/viewdetails/${workout._id}`)}
+                onClick={() => navigate(`/exercisedetails/${workout.exercises[0].exercise}`)}
                 className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded text-sm font-semibold"
               >
                 View
