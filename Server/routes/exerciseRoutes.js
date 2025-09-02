@@ -4,16 +4,31 @@ const Exercise=require("../models/Exercise")
  const mongoose = require('mongoose');
 const authenticateToken=require("../middleware/authenticateToken")
 const isAdmin=require('../middleware/checkAdmin')
-router.post('/',authenticateToken,isAdmin, async(req,res)=>{
-    try{
-const exercise= new Exercise(req.body);
-await exercise.save()
-res.status(201).json(exercise);
-    }
-    catch(err){
- res.status(400).json({eror:err.message})   
-    }
-})
+const upload=require("../multer")
+router.post('/', upload.array("images", 10), async (req, res) => {
+  try {
+    const { name, force, level, mechanic, equipment, primaryMuscles, secondaryMuscles, instructions, category } = req.body;
+    const imageUrls = req.files.map(file => `${name.replace(/\s+/g, "_")}/${file.filename}`);
+
+    const exercise = new Exercise({
+      name,
+      force,
+      level,
+      mechanic,
+      equipment,
+      primaryMuscles: primaryMuscles.split(","),
+      secondaryMuscles: secondaryMuscles.split(","),
+      instructions,
+      category,
+      imageUrls,
+    });
+
+    await exercise.save();
+    res.status(201).json(exercise);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 router.get("/",authenticateToken, async(req,res)=>{
     try{
 const exercise= await Exercise.find()
