@@ -10,7 +10,7 @@ const ExerciseSchema = new mongoose.Schema({
   secondaryMuscles: [String],
   instructions: String,
   category: String,
-  images: [String],
+
   imageUrls: [String], 
   exerciseId: String,  
   createdAt: {
