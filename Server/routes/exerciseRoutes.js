@@ -5,6 +5,7 @@ const Exercise=require("../models/Exercise")
 const authenticateToken=require("../middleware/authenticateToken")
 const isAdmin=require('../middleware/checkAdmin')
 const upload=require("../multer")
+
 router.post('/',authenticateToken,isAdmin, upload.array("images", 10), async (req, res) => {
   try {
     const { name, force, level, mechanic, equipment, primaryMuscles, secondaryMuscles, instructions, category } = req.body;
