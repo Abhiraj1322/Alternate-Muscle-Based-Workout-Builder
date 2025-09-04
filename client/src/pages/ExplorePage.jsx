@@ -32,7 +32,7 @@ useEffect(() => {
 
 }, []);
 const filteredExercise=exercise.filter((ex)=>{
-  const nameMatch=ex.name.toLowerCase().includes(search.toLowerCase())
+  const nameMatch=  (ex.name || "").toLowerCase().includes(search.toLowerCase())
   const muscleMatch=muscleGroup
 ?ex.primaryMuscles?.some((m)=>
   m.toLowerCase().includes(muscleGroup.toLowerCase())

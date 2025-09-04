@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const [exercises, setExercises] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    force: "",
-    level: "",
-    mechanic: "",
-    equipment: "",
-    primaryMuscles: "",
-    secondaryMuscles: "",
-    instructions: "",
-    category: "",
-  });
+    const [formData, setFormData] = useState({
+      name: "",
+      force: "",
+      level: "",
+      mechanic: "",
+      equipment: "",
+      primaryMuscles: "",
+      secondaryMuscles: "",
+      instructions: "",
+      category: "",
+    });
   const [files, setFiles] = useState([]);
   const [message, setMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,7 +38,7 @@ const AdminPage = () => {
     fetchExercises();
   }, [token]);
 
-  // Handle input changes
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -49,42 +49,47 @@ const AdminPage = () => {
   };
 
   // Handle form submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const data = new FormData();
 
-    // Append form fields
-    Object.keys(formData).forEach((key) => {
-      data.append(key, formData[key]);
-    });
+  // Append text fields
+  Object.keys(formData).forEach((key) => {
+    data.append(key, formData[key]);
+  });
 
-    // Append files
+  // Append images
+  if (files && files.length > 0) {
     files.forEach((file) => data.append("images", file));
+  }
 
-    try {
-      const res = await axios.post(
-        "https://alternate-muscle-based-workout-builder-1.onrender.com/exercise",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+  try {
+    const res = await axios.post(
+      "https://alternate-muscle-based-workout-builder-1.onrender.com/exercise",
+      data,
+      { headers: { Authorization: `Bearer ${token}` } } 
+    );
 
-      setMessage("✅ Exercise added successfully!");
-      setFormData({
-        name: "", force: "", level: "", mechanic: "", equipment: "",
-        primaryMuscles: "", secondaryMuscles: "", instructions: "", category: "",
-      });
-      setFiles([]);
-      setExercises((prev) => [...prev, res.data]);
-    } catch (err) {
-      console.error(err.response?.data || err.message);
-      setMessage("❌ Failed to add exercise");
-    }
-  };
+    setMessage("✅ Exercise added successfully!");
+    setFormData({
+      name: "", force: "", level: "", mechanic: "", equipment: "",
+      primaryMuscles: "", secondaryMuscles: "", instructions: "", category: "",
+    });
+    setFiles([]);
+    setExercises((prev) => [...prev, res.data]);
+  } catch (err) {
+  if (err.response) {
+    // Server responded with a status outside 2xx
+    console.error("Server error:", err.response.data);
+  } else if (err.request) {
+    // Request was made but no response received
+    console.error("No response received:", err.request);
+  } else {
+    // Something happened in setting up the request
+    console.error("Error setting up request:", err.message);
+  }
+}
+};
 
   // Handle delete
   const handleDelete = async (id) => {
@@ -100,10 +105,9 @@ const AdminPage = () => {
   };
 
   // Filter exercises based on search
-  const filteredExercises = exercises.filter((ex) =>
-    ex.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+const filteredExercises = exercises.filter((ex) =>
+  (ex.name || "").toLowerCase().includes(searchTerm.toLowerCase())
+);
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-6">
       <h1 className="text-3xl font-bold text-center mb-8 text-indigo-400">
