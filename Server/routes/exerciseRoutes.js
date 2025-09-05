@@ -70,7 +70,7 @@ if(!exercise) return res.status(404).json()
     }
 })
 
-router.delete("/:id",authenticateToken,isAdmin,async(req,res)=>{
+router.delete("/:id",async(req,res)=>{
     try{
 const exercise=await Exercise.findByIdAndDelete(req.params.id)
 if(!exercise) return res.status(404).json("Excercise got deleted")

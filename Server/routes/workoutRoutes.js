@@ -58,7 +58,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 });
 
 
-router.delete("/:id", authenticateToken, async (req, res) => {
+router.delete("/:id",async (req, res) => {
   try {
     const workout = await Workout.findOneAndDelete({
       _id: req.params.id,
