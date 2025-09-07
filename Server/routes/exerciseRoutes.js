@@ -70,13 +70,18 @@ if(!exercise) return res.status(404).json()
     }
 })
 
-router.delete("/:id",async(req,res)=>{
-    try{
-const exercise=await Exercise.findByIdAndDelete(req.params.id)
-if(!exercise) return res.status(404).json("Excercise got deleted")
+router.delete("/:id", async (req, res) => {
+  try {
+    const exercise = await Exercise.findByIdAndDelete(req.params.id);
+
+    if (!exercise) {
+      return res.status(404).json({ message: "Exercise not found" });
     }
-    catch (err){
- res.status(500).json({error:err})
-    }
-})
+
+    res.json({ message: "Exercise deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
  module.exports=router
