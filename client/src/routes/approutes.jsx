@@ -11,8 +11,9 @@ import Exercise from '../pages/Exercise'
 import Layout from '../pages/layout'
 import ProtectedRoute from '../components/ProtectedRoute'
 import EditWorkout from '../pages/EditWorkout'
-import ViewDetails from '../pages/ViewDetails'
+
 import AdminPage from '../pages/AdminPage'
+import ExerciseDetails from '../pages/exercisedetails'
 const approutes = () => {
   return (
     <Routes>
@@ -30,7 +31,8 @@ const approutes = () => {
       <Route path='exercise/:id' element={<ProtectedRoute><Exercise/></ProtectedRoute>}/>
       <Route path='editworkout/:id' element={<ProtectedRoute><EditWorkout/></ProtectedRoute>}/>
      
-        <Route path='viewdetails/:id' element={<ProtectedRoute><ViewDetails/></ProtectedRoute>}/>
+        <Route path='exercisedetails/:id' element={<ProtectedRoute><ExerciseDetails/></ProtectedRoute>}/>
+                <Route path='workoutdetails/:id' element={<ProtectedRoute><ExerciseDetails/></ProtectedRoute>}/>
          <Route path='user' element={<ProtectedRoute><UserPage/></ProtectedRoute>}/>
          <Route path='admin' element={<ProtectedRoute><AdminPage/></ProtectedRoute>}/>
          </Route>

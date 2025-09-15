@@ -17,7 +17,7 @@ useEffect(() => {
           Authorization: `Bearer ${token}`
         }
       });
-          console.log(response.data);
+   
       setWorkouts(response.data);
     } catch (error) {
       console.error("Failed to fetch workouts:", error);
@@ -25,17 +25,18 @@ useEffect(() => {
   };
 
   savedWorkouts();
+
 }, []);
   useEffect(() => {
     const fetchWorkout = async () => {
       try {
         const token = localStorage.getItem('token');  // Get token from storage
         const response = await axios.get(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, {
-          // headers: {
-          //   Authorization: `Bearer ${token}`,          // Pass token in header
-          // },
+           headers: {
+            Authorization: `Bearer ${token}`,          // Pass token in header
+          },
         });
-        setWorkouts(response.data);                      // Set workout data to state
+       setWorkouts(response.data);                      // Set workout data to state
       } catch (error) {
         console.error('Failed to fetch workout:', error);
       }
@@ -50,7 +51,7 @@ const deleteWorkout = async (id) => {
   try {
     const token = localStorage.getItem("token");
 
-    await axios.delete(`https://alternate-muscle-based-workout-builder-1.onrender.com/workout/${id}`, {
+    await axios.delete(`http://localhost:8000/workout/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -61,7 +62,7 @@ const deleteWorkout = async (id) => {
     console.error("Failed to delete workout:", error);
   }
 };
-const filteredWorkouts =
+const filteredWorkouts =  
   selectedDay === "All"
     ? workouts
     : workouts.filter((workout) => workout.day === selectedDay);
@@ -115,7 +116,7 @@ const filteredWorkouts =
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <button
-                onClick={() => navigate(`/viewdetails/${workout._id}`)}
+                onClick={() => navigate(`/exercisedetials/${workout._id}`)}
                 className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded text-sm font-semibold"
               >
                 View

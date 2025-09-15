@@ -79,7 +79,7 @@ const handleSubmit = async (e) => {
     setExercises((prev) => [...prev, res.data]);
   } catch (err) {
   if (err.response) {
-    // Server responded with a status outside 2xx
+
     console.error("Server error:", err.response.data);
   } else if (err.request) {
     // Request was made but no response received
@@ -93,12 +93,15 @@ const handleSubmit = async (e) => {
 
   // Handle delete
   const handleDelete = async (id) => {
+        const token = localStorage.getItem("token");
     try {
+      
       await axios.delete(
         `https://alternate-muscle-based-workout-builder-1.onrender.com/exercise/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setExercises((prev) => prev.filter((ex) => ex._id !== id));
+  
     } catch (err) {
       console.error(err.response?.data || err.message);
     }
