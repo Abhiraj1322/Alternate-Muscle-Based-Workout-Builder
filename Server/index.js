@@ -1,27 +1,37 @@
-const express=require('express')
-const mongoose=require('mongoose')
-const cors=require('cors')
-const app=express();
-require("dotenv").config()
-const path=require("path")
-const PORT=process.env.PORT
-const excercise=require("./routes/exerciseRoutes")
-const workout=require("../Server/routes/workoutRoutes")
-const authorization=require("./routes/auth")
-const user=require("./routes/user")
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const path = require("path");
+require("dotenv").config();
+
+const app = express();
+const PORT = process.env.PORT;
+
+
+const exerciseRoutes = require("./routes/exerciseRoutes");
+const workoutRoutes = require("./routes/workoutRoutes");
+const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
+
+
 app.use(cors());
-app.use(express.json())
-app.use("/exercise",excercise)
-app.use("/workout",workout)
-app.use(express.static(path.join(__dirname, 'public')))  
-app.use("/exercise",excercise)
-app.use("/api/auth",authorization)
-app.use("/api",user)
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => {
-      app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-      console.log("Mongoose is connected")
-    })
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("✅ Mongoose is connected");
+
+    app.use("/exercise", exerciseRoutes);
+    app.use("/workout", workoutRoutes);
+    app.use("/api/auth", authRoutes);
+    app.use("/api", userRoutes);
+
+    app.listen(PORT, () =>
+      console.log(`🚀 Server running on port ${PORT}`)
+    );
+  })
   .catch((err) => {
-    console.error("MongoDB connection error:", err);
+    console.error("❌ MongoDB connection error:", err);
   });

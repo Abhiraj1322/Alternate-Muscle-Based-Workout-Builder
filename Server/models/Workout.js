@@ -42,7 +42,7 @@ const workoutSchema= new mongoose.Schema({
       required: true,
     }
     }
-     
+      
    ],
    createdAt:{
     type:Date,

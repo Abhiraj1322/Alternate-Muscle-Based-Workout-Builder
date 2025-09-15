@@ -1,8 +1,7 @@
 const  express = require("express")
 const router=express.Router()
 const authenticateToken=require("../middleware/authenticateToken")
-
-const Workout = require("../models/Workout")
+const Workout=require('../models/Workout')
 
 
 router.post("/", authenticateToken, async (req, res) => {
@@ -20,7 +19,7 @@ router.post("/", authenticateToken, async (req, res) => {
 });
 
 
-router.get("/", authenticateToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const workouts = await Workout.find({ createdby: req.userId });
     res.status(200).json(workouts);
@@ -28,10 +27,10 @@ router.get("/", authenticateToken, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
-router.get("/:id", authenticateToken, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const workout = await Workout.findOne({ _id: req.params.id, createdby: req.userId });
-
+    const workout = await Workout.findOne({ _id: req.params.id, createdby: req.userId }).populate(exercises.exercise,"name equipment instruction")
+   
     if (!workout) {
       return res.status(404).json({ error: "Workout not found" });
     }
@@ -56,18 +55,21 @@ router.put("/:id", authenticateToken, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
-router.delete("/:id",async (req, res) => {
+router.delete("/:id",  async (req, res) => {
   try {
-    const workout = await Workout.findOneAndDelete({
+    const workout = await Workout.findByIdAndDelete({
       _id: req.params.id,
-      createdby: req.userId,
+      createdby: req.userId, 
     });
-    if (!workout) return res.status(404).json({ message: "Workout not found" });
-    res.json({ message: "Workout deleted" });
+
+    if (!workout) {
+      return res.status(404).json({ message: "Workout not found" });
+    }
+
+    res.json({ message: "Workout deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 module.exports=router;
