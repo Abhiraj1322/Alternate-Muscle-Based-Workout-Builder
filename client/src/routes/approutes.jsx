@@ -13,7 +13,7 @@ import ProtectedRoute from '../components/ProtectedRoute'
 import EditWorkout from '../pages/EditWorkout'
 
 import AdminPage from '../pages/AdminPage'
-import ExerciseDetails from '../pages/exercisedetails'
+import ExerciseDetails from '../pages/Details'
 const approutes = () => {
   return (
     <Routes>
@@ -32,7 +32,7 @@ const approutes = () => {
       <Route path='editworkout/:id' element={<ProtectedRoute><EditWorkout/></ProtectedRoute>}/>
      
         <Route path='exercisedetails/:id' element={<ProtectedRoute><ExerciseDetails/></ProtectedRoute>}/>
-                <Route path='workoutdetails/:id' element={<ProtectedRoute><ExerciseDetails/></ProtectedRoute>}/>
+    
          <Route path='user' element={<ProtectedRoute><UserPage/></ProtectedRoute>}/>
          <Route path='admin' element={<ProtectedRoute><AdminPage/></ProtectedRoute>}/>
          </Route>
