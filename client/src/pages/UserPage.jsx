@@ -8,7 +8,7 @@ const AdminPage = () => {
 useEffect(()=>{
   const fetchUerinfo= async ()=>{
     const token=localStorage.getItem("token")
-    const res =await fetch("https://alternate-muscle-based-workout-builder-1.onrender.com/api/user",{
+    const res =await fetch("http://localhost:8000/api/user",{
       headers:{
        Authorization: `Bearer ${token}`, 
       }

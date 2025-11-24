@@ -15,7 +15,7 @@ useEffect(() => {
   const fetchexercise = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("https://alternate-muscle-based-workout-builder-1.onrender.com/exercise",{
+      const response = await axios.get("http://localhost:8000/exercise",{
           headers: {
         Authorization: `Bearer ${token}` // send token
       }

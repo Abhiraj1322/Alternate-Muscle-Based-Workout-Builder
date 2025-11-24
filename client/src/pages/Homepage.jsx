@@ -15,8 +15,8 @@ useEffect(() => {
 
     try {
         const token = localStorage.getItem("token");
-      const response = await axios.get("https://alternate-muscle-based-workout-builder-1.onrender.com/exercise",{
-         headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get("http://localhost:8000/exercise",{
+         headers: { Authorization: `Bearer ${token}`},
       });
       
       setexercise(response.data);
@@ -37,10 +37,11 @@ useEffect(()=>{
   setSelectedMuscle(muscleId)
  }
   }
-  const frontSvg=frontRef.current;
-  const backSvg=  backRef.current
+  const frontSvg= frontRef.current;
+  const backSvg=  backRef.current;
 
   if(frontSvg) frontSvg.addEventListener('click',handmuscleclick)
+   
   if(backSvg)  backSvg.addEventListener('click',handmuscleclick) 
        return () => {
       if (frontSvg) frontSvg.removeEventListener('click', handmuscleclick);
@@ -52,8 +53,8 @@ useEffect(()=>{
     setSelectedMuscle([])
     return;
   }
-  const filter=exercise.filter(ex=>
-    ex.primaryMuscles && ex.primaryMuscles.includes(selectedMuscle)
+    const filter=exercise.filter(ex=>
+      ex.primaryMuscles && ex.primaryMuscles.includes(selectedMuscle)
   )
 setFilteredExercises(filter)
 },[selectedMuscle,exercise])

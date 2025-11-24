@@ -17,7 +17,7 @@ useEffect(() => {
   const fetchexercise = async () => {
     try {
         const token = localStorage.getItem("token")
-      const response = await axios.get(`https://alternate-muscle-based-workout-builder-1.onrender.com/exercise/${id}`,{
+      const response = await axios.get(`http://localhost:8000/exercise/${id}`,{
         headers:{
            Authorization: `Bearer ${token}`
         }
@@ -49,7 +49,7 @@ useEffect(() => {
         },
       ],
     };
-  const response = await axios.post("https://alternate-muscle-based-workout-builder-1.onrender.com/workout", newWorkout, {
+  const response = await axios.post("http://localhost:8000/workout", newWorkout, {
       headers: {
         Authorization: `Bearer ${token}`, 
       },
@@ -77,7 +77,7 @@ useEffect(() => {
     {exercise.imageUrls.map((imgPath, i) => (
       <img
         key={i}
-        src={`https://alternate-muscle-based-workout-builder-1.onrender.com/${imgPath}`}
+        src={`http://localhost:8000/${imgPath}`}
         alt={`${exercise.name} image ${i + 1}`}
         className="w-32 h-32 object-cover rounded border border-gray-500"
       />
@@ -121,7 +121,7 @@ useEffect(() => {
       </select>
     </div>
 
-    {/* Day */}
+    
     <div>
       <label className="block mb-1 font-medium text-white">Day</label>
       <select

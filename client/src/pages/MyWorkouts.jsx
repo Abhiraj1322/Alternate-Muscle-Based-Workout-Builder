@@ -4,12 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const MyWorkouts = () => {
   const { id } = useParams();
-  const [workouts, setWorkouts] = useState([]); // All workouts
-  const [selectedWorkout, setSelectedWorkout] = useState(null); // Single workout if needed
+  const [workouts, setWorkouts] = useState([]);
+  const [selectedWorkout, setSelectedWorkout] = useState({}); 
   const [selectedDay, setSelectedDay] = useState("All");
+  const[weigth,setweight]=useState([])
   const navigate = useNavigate();
 
-  // Fetch all workouts
+
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
@@ -18,31 +19,40 @@ const MyWorkouts = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setWorkouts(response.data);
+      
       } catch (err) {
         console.error("Failed to fetch workouts:", err);
       }
     };
     fetchWorkouts();
+
   }, []);
 
-  // Fetch single workout (optional)
-  useEffect(() => {
-    if (!id) return;
-    const fetchWorkout = async () => {
+  const addexercise=async()=>{
+    try{
+
+    }
+    catch{
+      
+    }
+  }
+
+  
+    const handlechange = async (id) => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(`http://localhost:8000/workout/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
+           headers: { Authorization: `Bearer ${token}` },
         });
         setSelectedWorkout(response.data);
       } catch (err) {
         console.error("Failed to fetch workout:", err);
       }
     };
-    fetchWorkout();
-  }, [id]);
+    
+  
+console.log(selectedWorkout)
 
-  // Delete workout
   const deleteWorkout = async (workoutId) => {
     try {
       const token = localStorage.getItem("token");
@@ -50,17 +60,20 @@ const MyWorkouts = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setWorkouts(prev => prev.filter(workout => workout._id !== workoutId));
-      // Clear selected workout if it was deleted
+
       if (selectedWorkout?._id === workoutId) setSelectedWorkout(null);
     } catch (err) {
       console.error("Failed to delete workout:", err);
     }
   };
 
-  // Filter workouts by day
+
+  
   const filteredWorkouts = selectedDay === "All"
     ? workouts
     : workouts.filter(workout => workout.day === selectedDay);
+
+
 
   return (
     <div className="p-4 sm:p-6 text-white min-h-screen bg-black">
@@ -99,6 +112,8 @@ const MyWorkouts = () => {
 
                 {/* Buttons */}
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                
+              
                   <button
                     onClick={() => navigate(`/exercisedetails/${workout.exercises[0].exercise}`)}
                     className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded text-sm font-semibold"
@@ -117,6 +132,30 @@ const MyWorkouts = () => {
                   >
                     Delete
                   </button>
+
+                    <div key={workout._id}>
+                  {  <input type="checkbox"_
+                            checked={selectedWorkout[workout._id]}
+                            onChange={()=>handlechange(workout._id)}
+                            onClick={()=>navigate(`/progress/${workout._id}`)}
+                            />  }
+                  
+                  </div>
+                  
+                  <div>
+                  
+                      <input type="number" 
+                      placeholder='Enter Weight'
+                      value={weigth}
+                      />
+                  
+                  </div>
+                 
+
+                
+                
+                        
+                  
                 </div>
               </div>
 

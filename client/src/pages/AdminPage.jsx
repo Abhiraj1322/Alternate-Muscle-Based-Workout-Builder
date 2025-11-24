@@ -22,12 +22,12 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  // Fetch exercises
+
   useEffect(() => {
     const fetchExercises = async () => {
       try {
         const res = await axios.get(
-          "https://alternate-muscle-based-workout-builder-1.onrender.com/exercise",
+          "http://localhost:8000/exercise",
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setExercises(res.data);
@@ -42,30 +42,27 @@ const AdminPage = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  // Handle file selection
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
 
-  // Handle form submit
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   const data = new FormData();
 
-  // Append text fields
+
   Object.keys(formData).forEach((key) => {
     data.append(key, formData[key]);
   });
 
-  // Append images
   if (files && files.length > 0) {
     files.forEach((file) => data.append("images", file));
   }
 
   try {
     const res = await axios.post(
-      "https://alternate-muscle-based-workout-builder-1.onrender.com/exercise",
+      "http://localhost:8000//exercise",
       data,
       { headers: { Authorization: `Bearer ${token}` } } 
     );
@@ -82,10 +79,10 @@ const handleSubmit = async (e) => {
 
     console.error("Server error:", err.response.data);
   } else if (err.request) {
-    // Request was made but no response received
+
     console.error("No response received:", err.request);
   } else {
-    // Something happened in setting up the request
+
     console.error("Error setting up request:", err.message);
   }
 }
@@ -97,7 +94,7 @@ const handleSubmit = async (e) => {
     try {
       
       await axios.delete(
-        `https://alternate-muscle-based-workout-builder-1.onrender.com/exercise/${id}`,
+        `http://localhost:8000/exercise/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setExercises((prev) => prev.filter((ex) => ex._id !== id));
@@ -185,7 +182,7 @@ const filteredExercises = exercises.filter((ex) =>
                     {ex.imageUrls?.map((url, i) => (
                       <img
                         key={i}
-                        src={`https://alternate-muscle-based-workout-builder-1.onrender.com/${url}`}
+                        src={`http://localhost:8000/${url}`}
                         alt={ex.name}
                         className="w-24 h-24 object-cover border"
                       />
