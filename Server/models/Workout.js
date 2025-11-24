@@ -40,7 +40,13 @@ const workoutSchema= new mongoose.Schema({
       type: String,
       enum: ['push', 'pull', 'legs'], 
       required: true,
-    }
+    },
+    weightLog:[
+  {
+    weight:Number,
+    date:{type:Date,default:Date.now}
+  }
+    ]
     }
       
    ],

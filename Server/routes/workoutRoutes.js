@@ -18,7 +18,29 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 });
 
+router.post("addweight/:id",authenticateToken,async(req,res)=>{
+  try{
+const{workoutid,exerciseId}=req.params
+const {weight}=req.body
+if(!weight){
+  return res.status(400).json({message:"there is no weight"})
+}
+const workout=await Workout.findById(workoutid);
+if(!workout) return res.status(404).json({msg:"Workout not found"})
+  const exercise=workout.exercises.id(exerciseId)
+if(!exercise) return res.status(404).json({msg:"exercise not found"})
+exercise.weightLog.push({
+  weight,
+  date:new Date()
+}) 
 
+}
+
+  catch(error){
+console.error("eror")
+ res.status(500).json({ error: error.message });
+  }
+})
 router.get("/", authenticateToken,async (req, res) => {
   try {
 
@@ -69,4 +91,4 @@ router.delete("/:id", authenticateToken, async (req, res) => {
   }
 });
 
-module.exports=router;
+module.exports=router;  
